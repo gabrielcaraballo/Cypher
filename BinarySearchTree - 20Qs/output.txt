@@ -1,0 +1,14 @@
+Q: 
+Is it an animal?Q: 
+Can it fly?A: 
+birdQ: 
+Does it have a tail?A: 
+mouseA: 
+spiderQ: 
+Does it have wheels?Q: 
+does it have four wheels?A: 
+CarA: 
+bicycleQ: 
+Is it nice?A: 
+TAA: 
+teacher
