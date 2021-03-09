@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+// Code written mostly by Vincent.
 public class HuffmanCipher {
 	huffNode root = null;
 	boolean notUsed = true;
