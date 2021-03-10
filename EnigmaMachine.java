@@ -1,42 +1,67 @@
 
 public class EnigmaMachine {
-	private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-	private String plugboard;
-	private String rotor1;
-	private String rotor2;
-	private String rotor3;
+	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+	String[] sequences;
+	private int turns;
 
-	public EnigmaMachine(String plugboard) {
-		this.plugboard = plugboard;
-		rotor1 = "w a q d u b x t c n o l s e v k j p m g r i y f z h".replaceAll(" ", "");
-		rotor2 = "y p m t f r c e h i d a s n g w x q o b u k v z l j".replaceAll(" ", "");
-		rotor3 = "k x p g q t h o j v a n f e r w z i l c d s y b m u".replaceAll(" ", "");
+	// https://www.cs.cornell.edu/courses/cs3110/2018sp/a1/a1.html
+	public EnigmaMachine(String[] sequences) {
+		this.sequences = sequences;
+		turns = 0;
 	}
 
-	public String substitute(String message, int offset) {
+	public char getCharToSubstitute(char start, String oldAlphabet, String newAlphabet) {
+		int pos = oldAlphabet.indexOf(start);
+		return newAlphabet.charAt(pos);
+	}
+
+	// Perform a monoalphabetic substitution
+	public String substitute(String message, String oldAlphabet, String newAlphabet) {
 		String out = "";
 		for (int i = 0; i < message.length(); i++) {
-			char current = message.charAt(i);
-			int posAlpha = ALPHABET.indexOf(current);
-			current = plugboard.charAt(posAlpha + offset);
-			out += current;
+			out += getCharToSubstitute(message.charAt(i), oldAlphabet, newAlphabet);
+			turn();
 		}
 		return out;
+	}
+
+	public String substitute(String message, int index) {
+		String out = "";
+		for (int i = 0; i < message.length(); i++) {
+			out += getCharToSubstitute(message.charAt(i), sequences[index - 1], sequences[index]);
+			turn();
+		}
+		return out;
+	}
+
+	public void turn() {
+		turns++;
+		sequences[1] = rotate(sequences[1]);
+		// if (turns % sequences[2].length() == 0) {
+		// sequences[2] = rotate(sequences[2]);
+		// System.out.println("2nd rotor rotated");
+		// }
+		// if (turns % (sequences[2].length() * sequences[3].length()) == 0) {
+		// sequences[3] = rotate(sequences[3]);
+		// System.out.println("3rd rotor rotated");
+		// }
+	}
+
+	public String rotate(String letters) {
+		// return letters.substring(letters.length() - 1) + letters.substring(0,
+		// letters.length() - 1); //last one in front
+		return letters.substring(1) + letters.substring(0, 1);
 	}
 
 	public String encode(String message) {
-		message = message.toLowerCase();
-		String out = "";
-		// 1. Swap letters according to plugboard
-		for (int i = 0; i < message.length(); i++) {
-			char current = message.charAt(i);
-			int posAlpha = ALPHABET.indexOf(current);
-			current = plugboard.charAt(posAlpha);
-			out += current;
-		}
+		message = message.toLowerCase().replaceAll("\\s", "");
+		// 1. Send to plugboard.
+		// 2. Turn rotor 1.
+		// 3. Encode in R1
+		// 4. Encode in R2
+		// 5. Send back through R2
+		// 6. Send back through R1
 
-		// 2. Pass the
-
-		return out;
+		return message;
 	}
 }
